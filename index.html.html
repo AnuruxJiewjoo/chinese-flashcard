@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บทสนทนาภาษาจีน 12 ประโยค</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(135deg, #FFF5F5 0%, #FED7D7 100%);
+        }
+        .zh-font {
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        /* 3D Card Flip CSS */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        .btn-bounce:active {
+            transform: scale(0.96);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF0F0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #F87171;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 text-gray-800">
+
+    <header class="text-center mt-2 mb-4 w-full max-w-4xl">
+        <span class="bg-red-100 text-red-700 text-xs sm:text-sm font-semibold px-3 py-1 rounded-full uppercase tracking-wider border border-red-200">
+            Chinese Dialogues
+        </span>
+        <h1 class="text-2xl sm:text-4xl font-bold text-red-800 mt-2">ฝึกบทสนทนาภาษาจีน 12 ชุด</h1>
+        <p class="text-gray-600 text-xs sm:text-sm mt-1">แตะที่การ์ดเพื่อดูเฉลย พินอิน คำอ่านภาษาไทย และคำแปล</p>
+
+        <!-- Mode Switcher Tabs -->
+        <div class="flex justify-center gap-2 mt-4 bg-red-200/60 p-1.5 rounded-2xl max-w-xs sm:max-w-sm mx-auto shadow-inner">
+            <button id="tab-random" onclick="switchMode('random')" class="flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-white text-red-700 shadow-md">
+                🎲 สุ่มบทสนทนา
+            </button>
+            <button id="tab-all" onclick="switchMode('all')" class="flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 text-red-900 hover:bg-white/50">
+                📚 อ่านทั้งหมด (12 ใบ)
+            </button>
+        </div>
+    </header>
+
+    <!-- MODE 1: SINGLE RANDOM CARD VIEW -->
+    <main id="random-mode-view" class="w-full max-w-md flex-1 flex flex-col items-center justify-center my-2">
+        <div class="w-full h-88 sm:h-96 perspective-1000 cursor-pointer" onclick="flipSingleCard()">
+            <div id="single-card-inner" class="relative w-full h-full transform-style-3d shadow-2xl rounded-3xl border-4 border-white bg-white">
+                
+                <!-- FRONT SIDE: SHOWS ONLY CHINESE CHARACTERS -->
+                <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl p-6 sm:p-8 flex flex-col justify-between bg-gradient-to-br from-white to-red-50 text-left border border-red-100">
+                    <div class="w-full flex justify-between items-center text-xs text-red-400 font-semibold">
+                        <span id="card-number-front">บทสนทนาที่ - / 12</span>
+                        <span class="flex items-center gap-1 bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-medium">
+                            👈 แตะดูเฉลย
+                        </span>
+                    </div>
+
+                    <div class="my-auto space-y-4 py-2">
+                        <div class="bg-white/80 p-4 rounded-2xl border border-red-100 shadow-sm">
+                            <p id="front-dialogue-a" class="zh-font text-2xl sm:text-3xl font-bold text-gray-800 leading-snug">
+                                A: -
+                            </p>
+                        </div>
+                        <div class="bg-red-50/80 p-4 rounded-2xl border border-red-100 shadow-sm">
+                            <p id="front-dialogue-b" class="zh-font text-2xl sm:text-3xl font-bold text-red-700 leading-snug">
+                                B: -
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="text-center text-xs text-gray-400 italic">
+                        (ภาษาจีนเท่านั้น - แตะการ์ดเพื่อดูพินอินและคำแปล)
+                    </div>
+                </div>
+
+                <!-- BACK SIDE: SHOWS PINYIN, THAI PHONETICS, AND TRANSLATION -->
+                <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl p-6 sm:p-8 flex flex-col justify-between bg-gradient-to-br from-red-600 via-red-700 to-red-800 text-white shadow-inner">
+                    <div class="flex justify-between items-center border-b border-red-400/50 pb-2">
+                        <span id="card-number-back" class="text-xs text-red-200 font-semibold">เฉลยบทสนทนาที่ - / 12</span>
+                        <span class="text-xs bg-red-900 bg-opacity-60 px-2.5 py-0.5 rounded-full text-red-100 border border-red-400/30">
+                            เฉลย
+                        </span>
+                    </div>
+
+                    <div class="my-auto space-y-3 py-1">
+                        <div class="bg-red-900/40 p-3 rounded-xl border border-red-400/30">
+                            <p id="back-dialogue-a" class="zh-font text-lg font-semibold text-white mb-0.5"></p>
+                            <p id="back-pinyin-a" class="text-xs text-yellow-200 font-mono"></p>
+                            <p id="back-thai-a" class="text-xs text-red-100 mt-0.5"></p>
+                        </div>
+
+                        <div class="bg-red-900/60 p-3 rounded-xl border border-red-400/40">
+                            <p id="back-dialogue-b" class="zh-font text-lg font-semibold text-yellow-300 mb-0.5"></p>
+                            <p id="back-pinyin-b" class="text-xs text-yellow-200 font-mono"></p>
+                            <p id="back-thai-b" class="text-xs text-red-100 mt-0.5"></p>
+                        </div>
+                    </div>
+
+                    <div class="text-center text-xs text-red-200">
+                        🔄 แตะอีกครั้งเพื่อกลับไปหน้าโจทย์
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <button id="draw-btn" onclick="drawRandomDialogue()" class="btn-bounce w-full mt-6 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-bold text-lg sm:text-xl py-4 px-6 rounded-2xl shadow-xl transition-all duration-200 flex items-center justify-center gap-3 border-2 border-red-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>🎲 สุ่มบทสนทนา</span>
+        </button>
+    </main>
+
+    <!-- MODE 2: ALL 12 CARDS GRID VIEW -->
+    <main id="all-mode-view" class="w-full max-w-5xl my-2 hidden">
+        <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <!-- Cards will be dynamically generated by JS -->
+        </div>
+    </main>
+
+    <footer class="mt-6 mb-2 text-center text-xs text-red-700/60 font-medium">
+        ภาษาจีนเพื่อการสื่อสาร • สุ่มและทบทวนบทสนทนา 12 ชุด
+    </footer>
+
+    <script>
+        // Data for all 12 Chinese dialogues
+        const dialogueList = [
+            {
+                id: 1,
+                aHanzi: "A：你在哪儿？",
+                aPinyin: "A: Nǐ zài nǎr?",
+                aThai: "หนี่ ไซ้ หน่าร์? (คุณอยู่ที่ไหน?)",
+                bHanzi: "B：我在家。",
+                bPinyin: "B: Wǒ zài jiā.",
+                bThai: "หว่อ ไซ้ เจีย (ฉันอยู่บ้าน)"
+            },
+            {
+                id: 2,
+                aHanzi: "A：你家在哪儿？",
+                aPinyin: "A: Nǐ jiā zài nǎr?",
+                aThai: "หนี่ เจีย ไซ้ หน่าร์? (บ้านคุณอยู่ที่ไหน?)",
+                bHanzi: "B：我家在清莱。",
+                bPinyin: "B: Wǒ jiā zài Qīnglái.",
+                bThai: "หว่อ เจีย ไซ้ ชิงไหล (บ้านฉันอยู่ที่เชียงราย)"
+            },
+            {
+                id: 3,
+                aHanzi: "A：王丽在做什么？",
+                aPinyin: "A: Wáng Lì zài zuò shénme?",
+                aThai: "หวาง ลี่ ไซ้ ซั่ว เสินเมอ? (หวางลี่กำลังทำอะไรอยู่?)",
+                bHanzi: "B：王丽在打电话。",
+                bPinyin: "B: Wáng Lì zài dǎ diànhuà.",
+                bThai: "หวาง ลี่ ไซ้ ต่า เตี้ยนฮั่ว (หวางลี่กำลังโทรศัพท์)"
+            },
+            {
+                id: 4,
+                aHanzi: "A：你在看电视吗？",
+                aPinyin: "A: Nǐ zài kàn diànshì ma?",
+                aThai: "หนี่ ไซ้ คั่น เตี้ยนซื่อ มะ? (คุณกำลังดูทีวีอยู่ไหม?)",
+                bHanzi: "B：我没在看电视，我在看书。",
+                bPinyin: "B: Wǒ méi zài kàn diànshì, wǒ zài kàn shū.",
+                bThai: "หว่อ เหมย ไซ้ คั่น เตี้ยนซื่อ, หว่อ ไซ้ คั่น ซู (ฉันไม่ได้กำลังดูทีวี ฉันกำลังอ่านหนังสือ)"
+            },
+            {
+                id: 5,
+                aHanzi: "A：他在哪儿等你？",
+                aPinyin: "A: Tā zài nǎr děng nǐ?",
+                aThai: "ทา ไซ้ หน่าร์ เต๋ง หนี่? (เขารอคุณอยู่ที่ไหน?)",
+                bHanzi: "B：他在大学门口等我。",
+                bPinyin: "B: Tā zài dàxué ménkǒu děng wǒ.",
+                bThai: "ทา ไซ้ ต้าเสวี่ย เหมินเค่อ เต๋ง หว่อ (เขารอฉันอยู่ที่หน้าประตูมหาวิทยาลัย)"
+            },
+            {
+                id: 6,
+                aHanzi: "A：昨天你在家做什么？",
+                aPinyin: "A: Zuótiān nǐ zài jiā zuò shénme?",
+                aThai: "จั๋วเทียน หนี่ ไซ้ เจีย ซั่ว เสินเมอ? (เมื่อวานคุณทำอะไรอยู่ที่บ้าน?)",
+                bHanzi: "B：我在家看电视。",
+                bPinyin: "B: Wǒ zài jiā kàn diànshì.",
+                bThai: "หว่อ ไซ้ เจีย คั่น เตี้ยนซื่อ (ฉันดูทีวีอยู่ที่บ้าน)"
+            },
+            {
+                id: 7,
+                aHanzi: "A：你在城里做什么？",
+                aPinyin: "A: Nǐ zài chénglǐ zuò shénme?",
+                aThai: "หนี่ ไซ้ เฉิงหลี่ ซั่ว เสินเมอ? (คุณทำอะไรในเมือง?)",
+                bHanzi: "B：我在城里买东西。",
+                bPinyin: "B: Wǒ zài chénglǐ mǎi dōngxi.",
+                bThai: "หว่อ ไซ้ เฉิงหลี่ หมัย ตงสิ (ฉันซื้อของในเมือง)"
+            },
+            {
+                id: 8,
+                aHanzi: "A：请问，在哪儿坐车？",
+                aPinyin: "A: Qǐngwèn, zài nǎr zuò chē?",
+                aThai: "ฉิ่งเวิ่น, ไซ้ หน่าร์ ซั่ว เชอ? (ขอถามหน่อย ขึ้นรถได้ที่ไหน?)",
+                bHanzi: "B：在那儿。",
+                bPinyin: "B: Zài nàr.",
+                bThai: "ไซ้ น้าร์ (ที่นั่น)"
+            },
+            {
+                id: 9,
+                aHanzi: "A：你在哪儿买药？",
+                aPinyin: "A: Nǐ zài nǎr mǎi yào?",
+                aThai: "หนี่ ไซ้ หน่าร์ หมัย เย้า? (คุณซื้อยาที่ไหน?)",
+                bHanzi: "B：我在大学的药店买药。",
+                bPinyin: "B: Wǒ zài dàxué de yàodiàn mǎi yào.",
+                bThai: "หว่อ ไซ้ ต้าเสวี่ย เตอ เย้าเตี้ยน หมัย เย้า (ฉันซื้อยาที่ร้านขายยาของมหาวิทยาลัย)"
+            },
+            {
+                id: 10,
+                aHanzi: "A：你在哪儿看书？",
+                aPinyin: "A: Nǐ zài nǎr kàn shū?",
+                aThai: "หนี่ ไซ้ หน่าร์ คั่น ซู? (คุณอ่านหนังสือที่ไหน?)",
+                bHanzi: "B：我在宿舍看书。",
+                bPinyin: "B: Wǒ zài sùshè kàn shū.",
+                bThai: "หว่อ ไซ้ ซู่เสื้อ คั่น ซู (ฉันอ่านหนังสือที่หอพัก)"
+            },
+            {
+                id: 11,
+                aHanzi: "A：你在哪里学习？",
+                aPinyin: "A: Nǐ zài nǎlǐ xuéxí?",
+                aThai: "หนี่ ไซ้ น้าหลี่ เสวี่ยสี? (คุณเรียนที่ไหน?)",
+                bHanzi: "B：我在梅州大学学习。",
+                bPinyin: "B: Wǒ zài Méizhōu Dàxué xuéxí.",
+                bThai: "หว่อ ไซ้ เหมย์โจว ต้าเสวี่ย เสวี่ยสี (ฉันเรียนที่มหาวิทยาลัยแม่โจ้)"
+            },
+            {
+                id: 12,
+                aHanzi: "A：你在哪里下车？",
+                aPinyin: "A: Nǐ zài nǎlǐ xià chē?",
+                aThai: "หนี่ ไซ้ น้าหลี่ เซี่ย เชอ? (คุณลงรถที่ไหน?)",
+                bHanzi: "B：我在书店下车。",
+                bPinyin: "B: Wǒ zài shūdiàn xià chē.",
+                bThai: "หว่อ ไซ้ ซูเตี้ยน เซี่ย เชอ (ฉันลงรถที่ร้านหนังสือ)"
+            }
+        ];
+
+        let isSingleFlipped = false;
+        let lastRandomIndex = -1;
+
+        // Switch between Random and All view modes
+        function switchMode(mode) {
+            const randomView = document.getElementById('random-mode-view');
+            const allView = document.getElementById('all-mode-view');
+            const tabRandom = document.getElementById('tab-random');
+            const tabAll = document.getElementById('tab-all');
+
+            if (mode === 'random') {
+                randomView.classList.remove('hidden');
+                allView.classList.add('hidden');
+                tabRandom.className = "flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-white text-red-700 shadow-md";
+                tabAll.className = "flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 text-red-900 hover:bg-white/50";
+            } else {
+                randomView.classList.add('hidden');
+                allView.classList.remove('hidden');
+                tabAll.className = "flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-white text-red-700 shadow-md";
+                tabRandom.className = "flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 text-red-900 hover:bg-white/50";
+                renderAllCards();
+            }
+        }
+
+        // Single Card Flip Logic
+        function flipSingleCard() {
+            const cardInner = document.getElementById('single-card-inner');
+            isSingleFlipped = !isSingleFlipped;
+            if (isSingleFlipped) {
+                cardInner.classList.add('rotate-y-180');
+            } else {
+                cardInner.classList.remove('rotate-y-180');
+            }
+        }
+
+        // Randomize dialogue for mode 1
+        function drawRandomDialogue() {
+            if (isSingleFlipped) {
+                flipSingleCard();
+                setTimeout(updateSingleContent, 300);
+            } else {
+                updateSingleContent();
+            }
+        }
+
+        function updateSingleContent() {
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * dialogueList.length);
+            } while (newIndex === lastRandomIndex && dialogueList.length > 1);
+            
+            lastRandomIndex = newIndex;
+            const item = dialogueList[newIndex];
+
+            document.getElementById('card-number-front').innerText = `บทสนทนาที่ ${item.id} / 12`;
+            document.getElementById('front-dialogue-a').innerText = item.aHanzi;
+            document.getElementById('front-dialogue-b').innerText = item.bHanzi;
+
+            document.getElementById('card-number-back').innerText = `เฉลยบทสนทนาที่ ${item.id} / 12`;
+            document.getElementById('back-dialogue-a').innerText = item.aHanzi;
+            document.getElementById('back-pinyin-a').innerText = item.aPinyin;
+            document.getElementById('back-thai-a').innerText = item.aThai;
+
+            document.getElementById('back-dialogue-b').innerText = item.bHanzi;
+            document.getElementById('back-pinyin-b').innerText = item.bPinyin;
+            document.getElementById('back-thai-b').innerText = item.bThai;
+        }
+
+        // Render all 12 cards in Grid view (Mode 2)
+        function renderAllCards() {
+            const grid = document.getElementById('cards-grid');
+            if (grid.children.length > 0) return; // Render only once
+
+            grid.innerHTML = dialogueList.map(item => `
+                <div class="h-80 perspective-1000 cursor-pointer" onclick="flipGridCard(this)">
+                    <div class="card-grid-inner relative w-full h-full transform-style-3d shadow-lg hover:shadow-xl transition-shadow rounded-2xl border-2 border-white bg-white">
+                        
+                        <!-- FRONT SIDE (CHINESE ONLY) -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl p-5 flex flex-col justify-between bg-gradient-to-br from-white to-red-50 border border-red-100">
+                            <div class="flex justify-between items-center text-xs text-red-500 font-semibold">
+                                <span>ใบที่ ${item.id}</span>
+                                <span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-[10px]">👈 แตะดูเฉลย</span>
+                            </div>
+
+                            <div class="space-y-3 my-auto">
+                                <div class="bg-white p-3 rounded-xl border border-red-100 shadow-sm">
+                                    <p class="zh-font text-xl font-bold text-gray-800 leading-snug">${item.aHanzi}</p>
+                                </div>
+                                <div class="bg-red-50 p-3 rounded-xl border border-red-100 shadow-sm">
+                                    <p class="zh-font text-xl font-bold text-red-700 leading-snug">${item.bHanzi}</p>
+                                </div>
+                            </div>
+
+                            <p class="text-center text-[11px] text-gray-400 italic">ภาษาจีนเท่านั้น</p>
+                        </div>
+
+                        <!-- BACK SIDE (PINYIN + THAI + TRANSLATION) -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl p-4 flex flex-col justify-between bg-gradient-to-br from-red-600 to-red-800 text-white shadow-inner">
+                            <div class="flex justify-between items-center border-b border-red-400/40 pb-1.5">
+                                <span class="text-xs text-red-200 font-medium">เฉลยใบที่ ${item.id}</span>
+                                <span class="text-[10px] bg-red-900/60 px-2 py-0.5 rounded-full text-red-100">เฉลย</span>
+                            </div>
+
+                            <div class="space-y-2 my-auto text-left">
+                                <div class="bg-red-900/40 p-2.5 rounded-lg border border-red-400/30">
+                                    <p class="zh-font text-sm font-semibold text-white">${item.aHanzi}</p>
+                                    <p class="text-[11px] text-yellow-200 font-mono">${item.aPinyin}</p>
+                                    <p class="text-[11px] text-red-100 mt-0.5">${item.aThai}</p>
+                                </div>
+
+                                <div class="bg-red-900/60 p-2.5 rounded-lg border border-red-400/40">
+                                    <p class="zh-font text-sm font-semibold text-yellow-300">${item.bHanzi}</p>
+                                    <p class="text-[11px] text-yellow-200 font-mono">${item.bPinyin}</p>
+                                    <p class="text-[11px] text-red-100 mt-0.5">${item.bThai}</p>
+                                </div>
+                            </div>
+
+                            <p class="text-center text-[10px] text-red-200">🔄 แตะเพื่อกลับไปหน้าโจทย์</p>
+                        </div>
+
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Flip individual cards in grid view
+        function flipGridCard(wrapper) {
+            const inner = wrapper.querySelector('.card-grid-inner');
+            inner.classList.toggle('rotate-y-180');
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            drawRandomDialogue();
+        };
+    </script>
+</body>
+</html>
